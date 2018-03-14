@@ -8,8 +8,8 @@
 *.ctxt
 
 # IntelliJ files
-.xml
-.iml
+*.xml
+*.iml
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
