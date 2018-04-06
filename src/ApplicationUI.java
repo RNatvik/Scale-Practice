@@ -12,8 +12,9 @@ public class ApplicationUI {
             "",
             "*** Main Menu ***",
             "1. List a scale",
-            "2. List chord",
-            "3. Practice",
+            "2. List key",
+            "3. List chord",
+            "4. Practice",
             "99. Quit",
     };
 
@@ -60,18 +61,24 @@ public class ApplicationUI {
                     "");
             switch (choice) {
                 case 1: //List scale
-                    key = getKey();
-                    mode = getMode();
+                    key = requestKey();
+                    mode = requestMode();
                     listScale(key, mode);
                     break;
 
-                case 2: //List chords
-                    key = getKey();
-                    mode = getMode();
-                    this.listNumberSystemChords(key, mode);
+                case 2: //List key
+                    key = requestKey();
+                    mode = requestMode();
+                    this.listKey(key, mode);
                     break;
 
-                case 3: //Practice
+                case 3: //List chord
+                    key = requestKey();
+                    mode = requestMode();
+                    this.listChord(key, mode);
+                    break;
+
+                case 4: //Practice
                     this.startPracticeMenu();
                     break;
 
@@ -89,25 +96,30 @@ public class ApplicationUI {
 
     private void startPracticeMenu() {
         boolean finished = false;
+        String key;
+        String mode;
         while (!finished) {
             this.printStringArray(this.practiceMenu);
             int choice = this.userInput.getInputInteger(
                     "");
             switch (choice) {
                 case 1: //Intervals
-                    String key = getKey();
-                    String mode = getMode();
+                    key = requestKey();
+                    mode = requestMode();
                     String[] scale = this.scaleParser.getScale(key, mode);
-                    this.intervals(scale);
+                    this.startIntervalPractice(scale);
                     break;
 
                 case 2: //Notes
+                    key = requestKey();
+                    mode = requestMode();
+                    this.startNotes(key, mode);
                     break;
 
                 case 3: //Scale sequence
-                    key = getKey();
-                    mode = getMode();
-                    scaleSequence(key, mode);
+                    key = requestKey();
+                    mode = requestMode();
+                    this.startScaleSequencePractice(key, mode);
                     break;
 
                 case 99: //Return to main menu
@@ -122,7 +134,32 @@ public class ApplicationUI {
         }
     }
 
-    public void intervals(String[] scale){
+    private void listScale(String key, String mode) {
+        String[] scale = this.scaleParser.getScale(key, mode);
+        printStringArray(scale);
+    }
+
+    private void listKey(String key, String mode) {
+        String[] scale = this.scaleParser.getScale(key, mode);
+        String[] chordSequence = this.scaleParser.getChordSequence();
+        for (int i = 0; i < chordSequence.length; i++) {
+            System.out.println(scale[i] + " (" + chordSequence[i] + ")");
+        }
+    }
+
+    private void listChord(String key, String mode){
+        String[] scale = this.scaleParser.getScale(key, mode);
+        System.out.println(scale[0]);
+        System.out.println(scale[2]);
+        System.out.println(scale[4]);
+        System.out.println(scale[6]);
+    }
+
+    private void startNotes(String key, String mode) {
+
+    }
+
+    public void startIntervalPractice(String[] scale){
         boolean finished = false;
         int score = 0;
         while (!finished) {
@@ -149,20 +186,7 @@ public class ApplicationUI {
         }
     }
 
-    private void listScale(String key, String mode) {
-        String[] scale = this.scaleParser.getScale(key, mode);
-        printStringArray(scale);
-    }
-
-    private void listNumberSystemChords(String key, String mode) {
-        String[] scale = this.scaleParser.getScale(key, mode);
-        String[] chordSequence = this.scaleParser.getChordSequence();
-        for (int i = 0; i < chordSequence.length; i++) {
-            System.out.println(scale[i] + " (" + chordSequence[i] + ")");
-        }
-    }
-
-    private void scaleSequence(String key, String mode) {
+    private void startScaleSequencePractice(String key, String mode) {
         String[] scale = this.scaleParser.getScale(key, mode);
         int i = 1;
         for (String part : scale) {
@@ -181,7 +205,7 @@ public class ApplicationUI {
         }
     }
 
-    private String getKey() {
+    private String requestKey() {
         boolean validKey = false;
         String key = "";
         System.out.println("Available keys:");
@@ -197,7 +221,7 @@ public class ApplicationUI {
         return key;
     }
 
-    private String getMode() {
+    private String requestMode() {
         boolean validMode = false;
         String mode = "";
         while (!validMode) {

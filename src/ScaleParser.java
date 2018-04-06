@@ -4,6 +4,10 @@ public class ScaleParser {
             0, 2, 4, 5, 7, 9, 11
     };
 
+    private int[] dominantSemitones = {
+            0, 2, 4, 5, 7, 9, 10
+    };
+
     private int[] minorSemitones = {
             0, 2, 3, 5, 7, 8, 10
     };
@@ -49,19 +53,19 @@ public class ScaleParser {
     }
 
     public int getKeyNoteIndex(String key) {
-        int validKey = 0;
+        int index = 0;
         for (int i = 0; i < this.notes.length; i++) {
-            if (this.notes[i].toLowerCase().equals(key)) {
-                validKey = i;
+            if (this.notes[i].toLowerCase().equals(key.toLowerCase())) {
+                index = i;
             }
         }
-        return validKey;
+        return index;
     }
 
     public boolean verifyKey(String key) {
         boolean validKey = false;
         for (int i = 0; i < this.notes.length; i++) {
-            if (this.notes[i].toLowerCase().equals(key)) {
+            if (this.notes[i].toLowerCase().equals(key.toLowerCase())) {
                 validKey = true;
             }
         }
